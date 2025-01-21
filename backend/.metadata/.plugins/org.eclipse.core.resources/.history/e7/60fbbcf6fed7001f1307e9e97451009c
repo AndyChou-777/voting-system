@@ -1,0 +1,53 @@
+package com.example.votingSystem.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.votingSystem.model.entity.VoteItem;
+import com.example.votingSystem.repository.VoteItemRepository;
+import com.example.votingSystem.repository.VoteRecordRepository;
+import com.example.votingSystem.service.VotingService;
+
+@Service
+public class VotingServiceImpl implements VotingService {
+	
+	 	@Autowired
+	    private VoteItemRepository voteItemRepository;
+
+	    @Autowired
+	    private VoteRecordRepository voteRecordRepository;
+
+	    // 获取所有投票项
+	    public List<VoteItem> getAllVoteItems() {
+	        return voteItemRepository.getAllVoteItems();
+	    }
+
+	    // 新增投票项
+	    public void addVoteItem(String itemName) {
+	        voteItemRepository.addVoteItem(itemName);
+	    }
+
+	    // 更新投票项名称
+	    public void updateVoteItem(Long itemId, String newName) {
+	        voteItemRepository.updateVoteItem(itemId, newName);
+	    }
+
+	    // 删除投票项
+	    public void deleteVoteItem(Long itemId) {
+	        voteItemRepository.deleteVoteItem(itemId);
+	    }
+
+	    // 新增投票记录
+	    public void addVoteRecord(Long userId, Long voteItemId) {
+	        voteRecordRepository.addVoteRecord(userId, voteItemId);
+	    }
+
+	    // 获取用户的投票记录
+	    public List<Object[]> getVoteRecordsByUserId(Long userId) {
+	        return voteRecordRepository.getVoteRecordsByUserId(userId);
+	    }
+	
+
+}

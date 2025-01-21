@@ -1,0 +1,18 @@
+package com.example.votingSystem.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/api/**")  // 設定允許跨域的 API 路徑
+                .allowedOrigins("http://localhost:5173")  // 允許來自前端應用的請求
+                .allowedMethods("GET", "POST", "PUT", "DELETE")  // 允許的 HTTP 方法
+                .allowedHeaders("*")  // 允許的請求頭部
+                .allowCredentials(true);  // 允許攜帶憑證（如果需要）
+    }
+}

@@ -1,0 +1,5 @@
+package com.example.votingSystem.controller;
+
+public class VotingController {
+
+}
