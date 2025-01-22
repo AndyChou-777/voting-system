@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.votingSystem.model.dto.VoteItemDto;
 import com.example.votingSystem.model.dto.VoteItemRequestDto;
 import com.example.votingSystem.model.dto.VoteRecordDto;
+import com.example.votingSystem.model.dto.VoteRequestDto;
 import com.example.votingSystem.service.VotingService;
 
 @RestController
@@ -79,12 +80,10 @@ public class VotingController {
     
     // 新增投票記錄
     @PutMapping("/records")
-    public ResponseEntity<Void> addVoteRecords(
-    		@PathVariable Long userId,
-            @RequestBody List<Long> voteItemIds
-    		) {
+    public ResponseEntity<Void> addVoteRecords(@RequestBody VoteRequestDto voteRequest) {
         try {
-            votingService.addVoteRecord(userId, voteItemIds);
+        	System.out.println("新增投票紀錄: " + voteRequest);
+            votingService.addVoteRecord(voteRequest.getUserId(), voteRequest.getVoteItemIds());
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

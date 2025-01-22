@@ -8,7 +8,7 @@ export const votingService = {
 
   // 新增投票項目
   addVoteItem(itemName: string) {
-    return api.post('/voting/items', { itemName })
+    return api.post('/voting/items', itemName)
   },
 
   // 更新投票項目
@@ -23,7 +23,10 @@ export const votingService = {
 
   // 新增投票記錄（複選）
   addVoteRecords(userId: number, voteItemIds: number[]) {
-    return api.put(`/voting/records?userId=${userId}`, voteItemIds)
+    return api.put('/voting/records', {
+        userId: userId,
+        voteItemIds: voteItemIds
+      })
   },
 
   // 獲取用戶投票記錄
