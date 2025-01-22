@@ -2,12 +2,10 @@
     <div class="vote-list">
       <h1>投票列表</h1>
       
-      <!-- 錯誤提示 -->
       <div v-if="error" class="error">
         {{ error }}
       </div>
   
-      <!-- 載入中提示 -->
       <div v-if="loading" class="loading">
         載入中...
       </div>
@@ -53,7 +51,6 @@
     error.value = ''
     try {
       const response = await votingService.getAllVoteItems()
-      console.log(response)
       voteItems.value = response.data
     } catch (err) {
       error.value = '獲取投票項目失敗'
@@ -81,7 +78,6 @@
     }
   }
   
-  // 組件掛載時獲取數據
   onMounted(() => {
     fetchVoteItems()
   })

@@ -14,12 +14,10 @@
         </button>
       </div>
   
-      <!-- 錯誤訊息 -->
       <div v-if="error" class="error">
         {{ error }}
       </div>
   
-      <!-- 載入中 -->
       <div v-if="loading" class="loading">
         載入中...
       </div>
@@ -68,7 +66,6 @@
   const checkSession = async () => {
     try {
       const response = await authService.checkSession()
-      console.log(response)
       if (response.status === 200) {
         if (response.data.role !== 'Admin' ){
           window.alert('用戶權限不符!')
@@ -103,8 +100,8 @@
     error.value = ''
     try {
       await votingService.addVoteItem(newItemName.value)
-      await fetchVoteItems() // 重新獲取列表
-      newItemName.value = '' // 清空輸入
+      await fetchVoteItems()
+      newItemName.value = ''
     } catch (err) {
       error.value = '新增投票項目失敗，僅能夠新增新字串'
       console.error('Error adding item:', err)
@@ -113,19 +110,16 @@
     }
   }
   
-  // 開始編輯
   const startEdit = (item: VoteItem) => {
     editingId.value = item.id
     editingName.value = item.itemName
   }
   
-  // 取消編輯
   const cancelEdit = () => {
     editingId.value = null
     editingName.value = ''
   }
   
-  // 更新投票項目
   const handleUpdateItem = async (itemId: number) => {
     if (!editingName.value) return
     
@@ -160,7 +154,6 @@
     }
   }
   
-  // 組件掛載時獲取數據
   onMounted(() => {
     fetchVoteItems();
     checkSession();

@@ -3,7 +3,7 @@
       <div class="login-card">
         <h1 class="login-title">用戶登入</h1>
         
-        <!-- 错误或成功消息 -->
+        <!-- 消息 -->
         <div v-if="message" 
              :class="['message', { 'error': isError, 'success': !isError }]">
           {{ message }}
@@ -75,10 +75,8 @@
       message.value = '登入成功！即將跳轉到主頁...';
       isError.value = false;
       
-      // 保存用户信息到本地存储或状态管理
       localStorage.setItem('user', JSON.stringify(response.data));
   
-      // 跳转到主页面
       setTimeout(() => {
         router.push('/');
       }, 3000);

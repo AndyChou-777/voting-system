@@ -98,8 +98,7 @@
     message.value = ''
     isError.value = false
     
-    try {
-        console.log(form)  
+    try {  
       await authService.registerUser(
         form.email,
         form.password,
@@ -110,7 +109,6 @@
       message.value = '註冊成功！即將導向登入頁面...'
       isError.value = false
       
-      // 3秒後導向登入頁
       setTimeout(() => {
         router.push('/login')
       }, 3000)

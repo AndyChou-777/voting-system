@@ -3,7 +3,6 @@ import { RouterLink, RouterView } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import { authService } from './api/authService'
 
-// 定義用戶狀態
 interface UserState {
   isLoggedIn: boolean
   role: string | null
@@ -34,20 +33,17 @@ const checkSession = async () => {
   }
 }
 
-// 處理登出
+// 登出
 const handleLogout = async () => {
   try {
     await authService.logout()
     userState.value.isLoggedIn = false
     userState.value.role = null
-    // 可以添加路由導航到首頁
-    // router.push('/')
   } catch (error) {
     console.error('登出失敗:', error)
   }
 }
 
-// 組件掛載時檢查登入狀態
 onMounted(() => {
   checkSession()
 })
