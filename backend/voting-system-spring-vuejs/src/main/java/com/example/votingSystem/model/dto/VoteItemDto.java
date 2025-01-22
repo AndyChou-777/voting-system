@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class VoteItemDto {
 	
 	private Long id;
-    private String name;
-    private Integer totalVotes;
+    private String itemName;
+    private Integer voteCount;
 
 }

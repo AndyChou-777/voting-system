@@ -69,6 +69,7 @@
     error.value = ''
     try {
       const response = await votingService.getAllVoteItems()
+      console.log(response.data)
       voteItems.value = response.data
     } catch (err) {
       error.value = '獲取投票項目失敗'

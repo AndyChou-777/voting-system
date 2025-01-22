@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.votingSystem.model.dto.VoteItemDto;
+import com.example.votingSystem.model.dto.VoteItemRequestDto;
 import com.example.votingSystem.model.dto.VoteRecordDto;
 import com.example.votingSystem.service.VotingService;
 
@@ -33,6 +34,7 @@ public class VotingController {
     	System.out.println("收到獲取要求");
         try {
             List<VoteItemDto> items = votingService.getAllVoteItems();
+            System.out.println("回傳獲取陣列: " + items );
             return ResponseEntity.ok(items);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -41,10 +43,10 @@ public class VotingController {
     
     // 新增投票項目
     @PostMapping("/items")
-    public ResponseEntity<Void> addVoteItem(@RequestBody String itemName) {
-    	System.out.println("新增投票項目: " + itemName);
+    public ResponseEntity<Void> addVoteItem(@RequestBody VoteItemRequestDto itemName) {
+    	System.out.println("新增投票項目: " + itemName.getItemName());
         try {
-            votingService.addVoteItem(itemName);
+            votingService.addVoteItem(itemName.getItemName());
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -55,9 +57,9 @@ public class VotingController {
     @PutMapping("/items/{itemId}")
     public ResponseEntity<Void> updateVoteItem(
             @PathVariable Long itemId,
-            @RequestBody String itemName) {
+            @RequestBody VoteItemRequestDto itemName) {
         try {
-            votingService.updateVoteItem(itemId, itemName);
+            votingService.updateVoteItem(itemId, itemName.getItemName());
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

@@ -8,7 +8,7 @@ export const votingService = {
 
   // 新增投票項目
   addVoteItem(itemName: string) {
-    return api.post('/voting/items', itemName)
+    return api.post('/voting/items', { itemName })
   },
 
   // 更新投票項目

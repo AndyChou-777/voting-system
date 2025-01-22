@@ -34,7 +34,7 @@ public class VotingServiceImpl implements VotingService {
 	    public List<VoteItemDto> getAllVoteItems() {
 	    	 System.out.println("開始獲取");
 	    	 List<VoteItem> voteItems = voteItemRepository.getAllVoteItems();
-	    	 System.out.println("獲取完成");
+	    	 System.out.println("獲取完成" + voteItems);
 	         return voteItems.stream()
 	                 .map(voteItem -> modelMapper.map(voteItem, VoteItemDto.class))
 	                 .collect(Collectors.toList());
