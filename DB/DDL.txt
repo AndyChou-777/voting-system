@@ -1,0 +1,106 @@
+一、創建資料庫
+
+CREATE DATABASE voting_system
+
+--------------------------------------------------------------------------------------------------------------
+
+二、建立資料表 (註：本人使用 JPA 定義 Entity 並建立資料表，希望優先使用 JPA 建立資料表，以下為參考語法)
+
+-- 指定資料庫
+
+USE voting_system;
+
+-- users 資料表
+
+CREATE TABLE users (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    salt VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL,
+    role ENUM('Admin', 'User') NOT NULL
+);
+
+-- vote_items 資料表
+
+CREATE TABLE vote_items (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    item_name VARCHAR(255) NOT NULL UNIQUE,
+    vote_count INT NOT NULL DEFAULT 0
+);
+
+-- vote_records 資料表
+
+CREATE TABLE vote_records (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    vote_time DATETIME NOT NULL,
+    user_id BIGINT NOT NULL,
+    vote_item_id BIGINT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (vote_item_id) REFERENCES vote_items(id) ON DELETE CASCADE
+);
+
+--------------------------------------------------------------------------------------------------------------
+
+三、Stored Procedure
+
+-- 投票項目相關
+
+DELIMITER $$
+
+-- 查詢所有投票項目
+
+CREATE PROCEDURE GetAllVoteItems()
+BEGIN
+    SELECT * FROM vote_items ORDER BY item_name ASC;
+END$$
+
+-- 新增投票項目
+
+CREATE PROCEDURE AddVoteItem(IN itemName VARCHAR(255))
+BEGIN
+    INSERT INTO vote_items (item_name, vote_count) VALUES (itemName, 0);
+END$$
+
+-- 更新投票項目名稱
+
+CREATE PROCEDURE UpdateVoteItem(IN itemId BIGINT, IN newName VARCHAR(255))
+BEGIN
+    UPDATE vote_items SET item_name = newName WHERE id = itemId;
+END$$
+
+-- 刪除投票項目
+
+CREATE PROCEDURE DeleteVoteItem(IN itemId BIGINT)
+BEGIN
+    DELETE FROM vote_items WHERE id = itemId;
+END$$
+
+DELIMITER ;
+
+-- 投票紀錄相關
+
+DELIMITER $$
+
+-- 新增投票紀錄
+
+CREATE PROCEDURE AddVoteRecord(IN userId BIGINT, IN voteItemId BIGINT)
+BEGIN
+    INSERT INTO vote_records (user_id, vote_item_id, vote_time)
+    VALUES (userId, voteItemId, NOW());
+
+    UPDATE vote_items SET vote_count = vote_count + 1 WHERE id = voteItemId;
+END$$
+
+-- 查詢某用戶的投票紀錄
+
+CREATE PROCEDURE GetVoteRecordsByUserId(IN userId BIGINT)
+BEGIN
+    SELECT vr.id, u.username, vi.name, vr.vote_time
+    FROM vote_records vr
+    JOIN users u ON vr.user_id = u.id
+    JOIN vote_items vi ON vr.vote_item_id = vi.id
+    WHERE vr.user_id = userId;
+END$$
+
+DELIMITER ;

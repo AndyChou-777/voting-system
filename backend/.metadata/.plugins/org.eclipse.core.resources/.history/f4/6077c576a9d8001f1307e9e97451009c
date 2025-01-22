@@ -1,0 +1,13 @@
+package com.example.votingSystem.service;
+
+import java.util.Optional;
+
+import com.example.votingSystem.model.dto.UserRegistrationDto;
+
+public interface UserService {
+
+	public void registerUser(UserRegistrationDto userRegistrationDto);
+	
+	public Optional<LoginResponseDTO> login(LoginRequestDTO loginRequestDto)
+	
+}

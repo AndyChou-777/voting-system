@@ -1,6 +1,7 @@
 import api from './config'
 
 export const votingService = {
+
   // 獲取所有投票項目
   getAllVoteItems() {
     return api.get('/voting/items')
@@ -33,4 +34,5 @@ export const votingService = {
   getVoteRecordsByUserId(userId: number) {
     return api.get(`/voting/records/user/${userId}`)
   }
+  
 }

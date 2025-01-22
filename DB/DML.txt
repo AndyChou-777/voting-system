@@ -1,0 +1,33 @@
+一、 呼叫 Stored Procedure (註：本人使用 JPA 的 @Procedure 進行呼叫，希望優先使用 JPA 來執行，以下為參考語法)
+
+-- 呼叫 GetAllVoteItems 獲得所有投票項目
+
+CALL GetAllVoteItems();
+
+-- 呼叫 AddVoteItem 新增一個投票項目
+
+CALL AddVoteItem('希望新增的項目名稱');
+
+-- 呼叫 UpdateVoteItem 更新投票項目名稱
+
+CALL UpdateVoteItem(希望更新的項目ID, '新的項目名稱');
+
+-- 呼叫 DeleteVoteItem 刪除投票項目
+
+CALL DeleteVoteItem(希望刪除的項目ID);
+
+-- 呼叫 AddVoteRecord 新增投票紀錄並幫對應的項目的票數 +1
+
+CALL AddVoteRecord(想投的項目ID之一, 想投的項目ID之二，想投的項目ID之三);
+
+-- 呼叫 GetVoteRecordsByUserId 查詢用戶的投票紀錄
+
+CALL GetVoteRecordsByUserId(1);
+
+-- 呼叫 RegisterUser 註冊新用戶
+
+CALL RegisterUser('希望註冊的信箱', '希望註冊的含鹽雜湊密碼', '用來加密的鹽', '希望註冊的名稱', '身分別只能輸入 User 或 Admin');
+
+-- 呼叫 FindUserByEmail 找尋指定用戶
+
+CALL FindUserByEmail('希望查詢的 Email');

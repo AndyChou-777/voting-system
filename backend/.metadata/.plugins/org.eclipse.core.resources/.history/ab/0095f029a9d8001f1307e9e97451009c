@@ -1,0 +1,9 @@
+package com.example.votingSystem.service;
+
+import com.example.votingSystem.model.dto.UserRegistrationDTO;
+
+public interface UserService {
+
+	public void registerUser(UserRegistrationDTO userRegistrationDTO);
+	
+}

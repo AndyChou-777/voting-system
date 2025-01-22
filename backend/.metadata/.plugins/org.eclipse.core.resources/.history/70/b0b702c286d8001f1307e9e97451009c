@@ -1,0 +1,5 @@
+package com.example.votingSystem.service.impl;
+
+public class UserServiceImpl {
+
+}
