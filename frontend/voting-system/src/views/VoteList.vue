@@ -70,11 +70,11 @@
     loading.value = true
     error.value = ''
     try {
-      await votingService.addVoteRecords(1, selectedItems.value)  // 1 是假設的用戶ID
+      await votingService.addVoteRecords(selectedItems.value)  // 1 是假設的用戶ID
       alert('投票成功！')
       selectedItems.value = [] // 清空選擇
     } catch (err) {
-      error.value = '提交投票失敗'
+      error.value = '提交投票失敗，請先進行登入!'
       console.error('提交投票失敗:', err)
     } finally {
       loading.value = false

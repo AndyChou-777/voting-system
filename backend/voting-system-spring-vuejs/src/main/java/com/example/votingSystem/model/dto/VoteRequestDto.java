@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class VoteRequestDto {
 
-	private Long userId;
     private List<Long> voteItemIds;
 	
 }

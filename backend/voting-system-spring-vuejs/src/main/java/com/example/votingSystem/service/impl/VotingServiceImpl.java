@@ -1,6 +1,7 @@
 package com.example.votingSystem.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,9 +33,7 @@ public class VotingServiceImpl implements VotingService {
 
 	    // 獲取所有投票項目
 	    public List<VoteItemDto> getAllVoteItems() {
-	    	 System.out.println("開始獲取");
 	    	 List<VoteItem> voteItems = voteItemRepository.getAllVoteItems();
-	    	 System.out.println("獲取完成" + voteItems);
 	         return voteItems.stream()
 	                 .map(voteItem -> modelMapper.map(voteItem, VoteItemDto.class))
 	                 .collect(Collectors.toList());
@@ -63,16 +62,9 @@ public class VotingServiceImpl implements VotingService {
 	    }
 
 	    // 獲取用戶的投票紀錄
-	    public List<VoteRecordDto> getVoteRecordsByUserId(Long userId) {
+	    public List<Object[]> getVoteRecordsByUserId(Long userId) {
 	    	List<Object[]> rawResults = voteRecordRepository.getVoteRecordsByUserId(userId);
-	        return rawResults.stream()
-	                .map((Object[] record) -> new VoteRecordDto(
-	                        (Long) record[0],                
-	                        (String) record[1],              
-	                        (String) record[2],             
-	                        ((LocalDateTime) record[3])
-	                ))
-	                .collect(Collectors.toList());
+	        return rawResults;
 	    }
 
 }

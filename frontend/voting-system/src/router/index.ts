@@ -3,6 +3,7 @@ import VoteList from '../views/VoteList.vue'
 import VoteManagement from '../views/VoteManagement.vue'
 import Register from '../views/Register.vue'
 import Login from '../views/Login.vue'
+import VoteRecord from '../views/VoteRecord.vue'
 
 
 const router = createRouter({
@@ -27,6 +28,11 @@ const router = createRouter({
       path: '/manage',
       name: 'vote-management',
       component: VoteManagement
+    },
+    {
+      path: '/record',
+      name: 'vote-records',
+      component: VoteRecord
     },
   ],
 })

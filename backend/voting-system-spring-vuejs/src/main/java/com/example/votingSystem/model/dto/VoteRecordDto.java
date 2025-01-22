@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 public class VoteRecordDto {
 
 	private Long id;
-	private String voterName; 
-    private String voteItemName; 
+	private String username; 
+    private String itemName; 
     private LocalDateTime voteTime;
 	
 }

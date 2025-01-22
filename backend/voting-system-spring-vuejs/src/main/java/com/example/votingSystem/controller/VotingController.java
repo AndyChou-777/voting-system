@@ -15,11 +15,26 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.votingSystem.model.dto.UserResponeDto;
 import com.example.votingSystem.model.dto.VoteItemDto;
 import com.example.votingSystem.model.dto.VoteItemRequestDto;
 import com.example.votingSystem.model.dto.VoteRecordDto;
 import com.example.votingSystem.model.dto.VoteRequestDto;
 import com.example.votingSystem.service.VotingService;
+
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+
+/*
+ * WEB REST API
+ * ----------------------------------
+ * GET     /items            獲取所有投票項目
+ * POST    /items            新增投票項目
+ * PUT     /items/{itemId}   更新投票項目
+ * DELETE  /items/{itemId}   刪除投票項目
+ * PUT     /records          新增投票記錄
+ * GET     /records/user/    獲取用戶投票記錄
+ * */
 
 @RestController
 @RequestMapping("/api/voting")
@@ -29,23 +44,18 @@ public class VotingController {
 	@Autowired
     private VotingService votingService;
 	
-	// 獲取所有投票項目
     @GetMapping("/items")
     public ResponseEntity<List<VoteItemDto>> getAllVoteItems() {
-    	System.out.println("收到獲取要求");
         try {
             List<VoteItemDto> items = votingService.getAllVoteItems();
-            System.out.println("回傳獲取陣列: " + items );
             return ResponseEntity.ok(items);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
     
-    // 新增投票項目
     @PostMapping("/items")
-    public ResponseEntity<Void> addVoteItem(@RequestBody VoteItemRequestDto itemName) {
-    	System.out.println("新增投票項目: " + itemName.getItemName());
+    public ResponseEntity<Void> addVoteItem(@RequestBody @Valid VoteItemRequestDto itemName) {
         try {
             votingService.addVoteItem(itemName.getItemName());
             return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -54,7 +64,6 @@ public class VotingController {
         }
     }
     
-    // 更新投票項目
     @PutMapping("/items/{itemId}")
     public ResponseEntity<Void> updateVoteItem(
             @PathVariable Long itemId,
@@ -67,7 +76,6 @@ public class VotingController {
         }
     }
     
-    // 刪除投票項目
     @DeleteMapping("/items/{itemId}")
     public ResponseEntity<Void> deleteVoteItem(@PathVariable Long itemId) {
         try {
@@ -78,23 +86,25 @@ public class VotingController {
         }
     }
     
-    // 新增投票記錄
     @PutMapping("/records")
-    public ResponseEntity<Void> addVoteRecords(@RequestBody VoteRequestDto voteRequest) {
+    public ResponseEntity<Void> addVoteRecords(
+    		@RequestBody VoteRequestDto voteRequest,
+    		HttpSession session
+    		) {
         try {
-        	System.out.println("新增投票紀錄: " + voteRequest);
-            votingService.addVoteRecord(voteRequest.getUserId(), voteRequest.getVoteItemIds());
+        	UserResponeDto loginDto = (UserResponeDto) session.getAttribute("loginDTO");
+            votingService.addVoteRecord(loginDto.getId(), voteRequest.getVoteItemIds());
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
     
-    // 獲取用戶投票記錄
-    @GetMapping("/records/user/{userId}")
-    public ResponseEntity<List<VoteRecordDto>> getVoteRecordsByUserId(@PathVariable Long userId) {
+    @GetMapping("/records/user/")
+    public ResponseEntity<List<Object[]>> getVoteRecordsByUserId(HttpSession session) {
         try {
-            List<VoteRecordDto> records = votingService.getVoteRecordsByUserId(userId);
+        	UserResponeDto loginDto = (UserResponeDto) session.getAttribute("loginDTO");
+            List<Object[]> records = votingService.getVoteRecordsByUserId(loginDto.getId());
             return ResponseEntity.ok(records);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

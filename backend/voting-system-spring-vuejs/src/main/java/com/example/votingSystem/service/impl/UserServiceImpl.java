@@ -33,8 +33,6 @@ public class UserServiceImpl implements UserService {
             String salt = Hash.getSalt();
             String hashedPassword = Hash.getHash(userRegistrationDTO.getPassword(), salt);
 
-            // 調用預存程序註冊用戶
-            System.out.println("準備進行資料庫存取: "+ userRegistrationDTO);
             userRepository.registerUser(
             	userRegistrationDTO.getEmail(),
                 hashedPassword,

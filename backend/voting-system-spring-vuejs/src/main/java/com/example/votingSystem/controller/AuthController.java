@@ -18,6 +18,16 @@ import com.example.votingSystem.model.dto.UserResponeDto;
 import com.example.votingSystem.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+
+/*
+ * WEB REST API
+ * ----------------------------------
+ * POST /register   註冊
+ * POST /login      登入
+ * GET  /logout     登出
+ * GET  /session    獲得憑證
+ * */
 
 @RestController
 @RequestMapping("/api/auth")
@@ -28,8 +38,7 @@ public class AuthController {
     private UserService userService;
     
     @PostMapping("/register")
-    public ResponseEntity<Void> registerUser(@RequestBody UserRegistrationDto userRegistrationDto) {
-    	System.out.println("收到註冊要求:" + userRegistrationDto);
+    public ResponseEntity<Void> registerUser(@RequestBody @Valid UserRegistrationDto userRegistrationDto) {
         try {
         	userService.registerUser(userRegistrationDto);
         	return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -39,11 +48,9 @@ public class AuthController {
     }
     
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserLoginDto loginDto, 
+    public ResponseEntity<?> login(@RequestBody @Valid UserLoginDto loginDto, 
                                  HttpSession session) {
-    	System.out.println("收到登入要求:" + loginDto);
         Optional<UserResponeDto> optLoginDto = userService.login(loginDto);
-        System.out.println("得到的用戶資訊:" + optLoginDto);
         if (optLoginDto.isEmpty()) {
             return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
@@ -58,24 +65,20 @@ public class AuthController {
     
     @GetMapping("/logout")
     public ResponseEntity<String> logout(HttpSession session) {
-    	System.out.println("收到登出要求");
         session.invalidate();
         return ResponseEntity.ok("登出成功");
     }
     
     @GetMapping("/session")
     public ResponseEntity<?> checkSession(HttpSession session) {
-    	System.out.println("收到確認要求");
+    	
     	UserResponeDto loginDto = (UserResponeDto) session.getAttribute("loginDTO");
-    	System.out.println("Session中的身分: " + loginDto);
         
         if (loginDto == null) {
             return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body("未登入");
         }
-        System.out.println("回傳確認身分: " + loginDto);
-        
         return ResponseEntity.ok(loginDto);
     }
     

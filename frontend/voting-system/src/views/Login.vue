@@ -18,6 +18,7 @@
               type="email" 
               required
               placeholder="請輸入電子信箱"
+              maxlength="255"
               :disabled="loading"
             />
           </div>
@@ -31,6 +32,9 @@
               required
               placeholder="請輸入密碼"
               :disabled="loading"
+              minlength="8"
+              maxlength="24"
+              title="密碼需包含至少 8 個字符，最大 24 個字符"
             />
           </div>
   

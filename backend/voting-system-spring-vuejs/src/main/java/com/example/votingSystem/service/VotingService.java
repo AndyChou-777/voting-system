@@ -17,6 +17,6 @@ public interface VotingService {
 	
 	public void addVoteRecord(Long userId, List<Long> voteItemIds);
 	
-	public List<VoteRecordDto> getVoteRecordsByUserId(Long userId);
+	public List<Object[]> getVoteRecordsByUserId(Long userId);
 	
 }

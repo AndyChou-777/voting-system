@@ -23,16 +23,15 @@ export const votingService = {
   },
 
   // 新增投票記錄（複選）
-  addVoteRecords(userId: number, voteItemIds: number[]) {
+  addVoteRecords(voteItemIds: number[]) {
     return api.put('/voting/records', {
-        userId: userId,
         voteItemIds: voteItemIds
       })
   },
 
   // 獲取用戶投票記錄
-  getVoteRecordsByUserId(userId: number) {
-    return api.get(`/voting/records/user/${userId}`)
+  getVoteRecordsByUserId() {
+    return api.get('/voting/records/user/')
   }
-  
+
 }

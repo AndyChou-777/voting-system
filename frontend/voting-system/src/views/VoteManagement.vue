@@ -50,6 +50,7 @@
   <script setup lang="ts">
   import { ref, onMounted } from 'vue'
   import { votingService } from '../api/votingService'
+  import { authService } from '../api/authService'
   
   interface VoteItem {
     id: number
@@ -62,6 +63,22 @@
   const newItemName = ref('')
   const editingId = ref<number | null>(null)
   const editingName = ref('')
+
+  // 檢查登入狀態
+  const checkSession = async () => {
+    try {
+      const response = await authService.checkSession()
+      console.log(response)
+      if (response.status === 200) {
+        if (response.data.role !== 'Admin' ){
+          window.alert('用戶權限不符!')
+          ref('/')
+        }
+      }
+    } catch (error) {
+      console.error('Error checking session:', error);
+    }
+  }
   
   // 獲取所有投票項目
   const fetchVoteItems = async () => {
@@ -89,7 +106,7 @@
       await fetchVoteItems() // 重新獲取列表
       newItemName.value = '' // 清空輸入
     } catch (err) {
-      error.value = '新增投票項目失敗'
+      error.value = '新增投票項目失敗，僅能夠新增新字串'
       console.error('Error adding item:', err)
     } finally {
       loading.value = false
@@ -145,8 +162,10 @@
   
   // 組件掛載時獲取數據
   onMounted(() => {
-    fetchVoteItems()
+    fetchVoteItems();
+    checkSession();
   })
+
   </script>
   
   <style scoped>

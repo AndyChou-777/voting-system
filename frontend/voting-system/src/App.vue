@@ -66,6 +66,11 @@ onMounted(() => {
           <RouterLink to="/login">會員登入</RouterLink>
         </template>
 
+        <!-- 登入用戶可以看到投票記錄 -->
+        <RouterLink 
+          v-if="userState.isLoggedIn" 
+          to="/record">投票記錄</RouterLink>
+
         <!-- Admin 可以看到後臺管理 -->
         <RouterLink 
           v-if="userState.isLoggedIn && userState.role === 'Admin'" 
@@ -125,7 +130,7 @@ onMounted(() => {
 }
 
 .content-wrapper {
-  margin-top: 60px; /* 根據導航欄高度調整 */
+  margin-top: 60px;
   padding: 20px;
 }
 
