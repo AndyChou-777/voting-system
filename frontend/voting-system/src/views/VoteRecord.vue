@@ -16,11 +16,15 @@ const fetchVoteRecords = async () => {
   try {
     loading.value = true
     const response = await votingService.getVoteRecordsByUserId()
-    console.log('收到時間數據');
-    console.log(response);
-    voteRecords.value = response.data
-    console.log('轉換的數據');
-    console.log(voteRecords);
+    console.log('收到數據:', response)
+
+    // 映射數據
+    voteRecords.value = response.data.map((record: any) => ({
+      id: record[0],
+      itemName: record[2], // 將第3欄（項目名稱）映射到 itemName
+      voteDate: record[3],  // 將第4欄（投票時間）映射到 voteDate
+    }))
+    console.log('轉換的數據:', voteRecords)
   } catch (err) {
     error.value = '獲取投票記錄失敗'
     console.error(err)
